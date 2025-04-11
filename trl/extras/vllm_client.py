@@ -15,7 +15,7 @@
 import atexit
 import logging
 import time
-from typing import Optional
+from typing import Optional, Union
 
 import torch
 from torch import nn
@@ -134,6 +134,7 @@ class VLLMClient:
         prompts: list[str],
         n: int = 1,
         repetition_penalty: float = 1.0,
+        stop: Union[str, list[str]] = None,
         temperature: float = 1.0,
         top_p: float = 1.0,
         top_k: int = -1,
@@ -151,6 +152,8 @@ class VLLMClient:
                 Number of completions to generate for each prompt.
             repetition_penalty (`float`, *optional*, defaults to `1.0`):
                 Parameter for repetition penalty. 1.0 means no penalty.
+            stop (`Union[str, list[str]]`, *optional*, defaults to `None`):
+                Parameter for stop tokens.
             temperature (`float`, *optional*, defaults to `1.0`):
                 Temperature parameter for sampling. Higher values increase diversity.
             top_p (`float`, *optional*, defaults to `1.0`):
@@ -175,6 +178,7 @@ class VLLMClient:
                 "prompts": prompts,
                 "n": n,
                 "repetition_penalty": repetition_penalty,
+                "stop": stop,
                 "temperature": temperature,
                 "top_p": top_p,
                 "top_k": top_k,

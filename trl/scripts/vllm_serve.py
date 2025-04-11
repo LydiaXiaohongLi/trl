@@ -17,7 +17,7 @@ import logging
 import os
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Union
 
 import torch
 
@@ -279,6 +279,7 @@ def main(script_args: ScriptArguments):
         prompts: list[str]
         n: int = 1
         repetition_penalty: float = 1.0
+        stop: Union[str, list[str]] = None,
         temperature: float = 1.0
         top_p: float = 1.0
         top_k: int = -1
@@ -323,6 +324,7 @@ def main(script_args: ScriptArguments):
         sampling_params = SamplingParams(
             n=request.n,
             repetition_penalty=request.repetition_penalty,
+            stop = request.stop,
             temperature=request.temperature,
             top_p=request.top_p,
             top_k=request.top_k,
