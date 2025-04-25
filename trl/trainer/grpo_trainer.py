@@ -501,6 +501,8 @@ class GRPOTrainer(Trainer):
         self.top_k = args.top_k
         self.min_p = args.min_p
         self.repetition_penalty = args.repetition_penalty
+        self.skip_special_tokens = args.skip_special_tokens
+        self.stop_strings = args.stop_strings
         self.use_vllm = args.use_vllm
         self.use_liger_loss = args.use_liger_loss
         self.loss_type = args.loss_type
@@ -658,6 +660,7 @@ class GRPOTrainer(Trainer):
                 top_k=self.top_k,
                 min_p=self.min_p,
                 repetition_penalty=self.repetition_penalty,
+                stop_strings=self.stop_strings,
                 cache_implementation=args.cache_implementation,
             )
 
@@ -944,6 +947,7 @@ class GRPOTrainer(Trainer):
                         prompts=ordered_set_of_prompts,
                         n=self.num_generations,
                         repetition_penalty=self.repetition_penalty,
+                        stop=self.stop_strings,
                         temperature=self.temperature,
                         top_p=self.top_p,
                         top_k=-1 if self.top_k is None else self.top_k,
@@ -1021,7 +1025,7 @@ class GRPOTrainer(Trainer):
                     )
 
         # Decode the generated completions
-        completions_text = self.processing_class.batch_decode(completion_ids, skip_special_tokens=True)
+        completions_text = self.processing_class.batch_decode(completion_ids, skip_special_tokens=self.skip_special_tokens)
         if is_conversational(inputs[0]):
             completions = []
             for prompt, completion in zip(prompts, completions_text):

@@ -263,6 +263,18 @@ class GRPOConfig(TrainingArguments):
             "to repeat tokens."
         },
     )
+    skip_special_tokens: bool = field(
+        default=True,
+        metadata={
+            "help": "If to skip special tokens in generation. "
+        },
+    )
+    stop_strings: Union[str, list[str]] = field(
+        default=None,
+        metadata={
+            "help": "List of stop tokens"
+        },
+    )
     cache_implementation: Optional[str] = field(
         default=None,
         metadata={"help": "Implementation of the cache method for faster generation when use_vllm is set to False."},
